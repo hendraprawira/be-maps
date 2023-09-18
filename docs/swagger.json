@@ -1,0 +1,265 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/track": {
+            "put": {
+                "description": "Update a manual track data",
+                "tags": [
+                    "Manual Track"
+                ],
+                "summary": "Update a manual track data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "query by id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "description": "Track",
+                        "name": "Update_manual_track",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Tracks"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Tracks"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/track.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/track.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a manual  track data",
+                "tags": [
+                    "Manual Track"
+                ],
+                "summary": "Create a manual track data",
+                "parameters": [
+                    {
+                        "description": "Track",
+                        "name": "create_track",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Tracks"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Tracks"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/track.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/track.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a manual track data based on ID",
+                "tags": [
+                    "Manual Track"
+                ],
+                "summary": "Delete a manual track data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "query by id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/track.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/track/{name}": {
+            "get": {
+                "description": "Get a tracking data by name",
+                "tags": [
+                    "Manual Track"
+                ],
+                "summary": "Get a tracking data by name",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Name",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.TrackGet"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/track.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/track.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.AdditionalInfo": {
+            "type": "object",
+            "properties": {
+                "features": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Features"
+                    }
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Features": {
+            "type": "object",
+            "properties": {
+                "geometry": {
+                    "$ref": "#/definitions/models.Geometry"
+                },
+                "properties": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Geometry": {
+            "type": "object",
+            "properties": {
+                "coordinates": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TrackGet": {
+            "type": "object",
+            "required": [
+                "additional_info",
+                "name",
+                "track_id",
+                "track_name"
+            ],
+            "properties": {
+                "additional_info": {
+                    "$ref": "#/definitions/models.AdditionalInfo"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "is_deleted": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "track_id": {
+                    "type": "string"
+                },
+                "track_name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Tracks": {
+            "type": "object",
+            "required": [
+                "additional_info",
+                "name",
+                "track_id",
+                "track_name"
+            ],
+            "properties": {
+                "additional_info": {
+                    "$ref": "#/definitions/models.AdditionalInfo"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "track_id": {
+                    "type": "string"
+                },
+                "track_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "track.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

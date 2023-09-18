@@ -1,0 +1,174 @@
+definitions:
+  models.AdditionalInfo:
+    properties:
+      features:
+        items:
+          $ref: '#/definitions/models.Features'
+        type: array
+      type:
+        type: string
+    type: object
+  models.Features:
+    properties:
+      geometry:
+        $ref: '#/definitions/models.Geometry'
+      properties:
+        type: string
+      type:
+        type: string
+    type: object
+  models.Geometry:
+    properties:
+      coordinates:
+        items:
+          type: integer
+        type: array
+      type:
+        type: string
+    type: object
+  models.TrackGet:
+    properties:
+      additional_info:
+        $ref: '#/definitions/models.AdditionalInfo'
+      id:
+        type: string
+      is_deleted:
+        type: boolean
+      name:
+        type: string
+      track_id:
+        type: string
+      track_name:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - additional_info
+    - name
+    - track_id
+    - track_name
+    type: object
+  models.Tracks:
+    properties:
+      additional_info:
+        $ref: '#/definitions/models.AdditionalInfo'
+      name:
+        type: string
+      track_id:
+        type: string
+      track_name:
+        type: string
+    required:
+    - additional_info
+    - name
+    - track_id
+    - track_name
+    type: object
+  track.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /track:
+    delete:
+      description: Delete a manual track data based on ID
+      parameters:
+      - description: query by id
+        in: query
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/track.ErrorResponse'
+      summary: Delete a manual track data
+      tags:
+      - Manual Track
+    post:
+      description: Create a manual  track data
+      parameters:
+      - description: Track
+        in: body
+        name: create_track
+        required: true
+        schema:
+          $ref: '#/definitions/models.Tracks'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Tracks'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/track.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/track.ErrorResponse'
+      summary: Create a manual track data
+      tags:
+      - Manual Track
+    put:
+      description: Update a manual track data
+      parameters:
+      - description: query by id
+        in: query
+        name: id
+        required: true
+        type: string
+      - description: Track
+        in: body
+        name: Update_manual_track
+        required: true
+        schema:
+          $ref: '#/definitions/models.Tracks'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Tracks'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/track.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/track.ErrorResponse'
+      summary: Update a manual track data
+      tags:
+      - Manual Track
+  /track/{name}:
+    get:
+      description: Get a tracking data by name
+      parameters:
+      - description: Name
+        in: path
+        name: name
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TrackGet'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/track.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/track.ErrorResponse'
+      summary: Get a tracking data by name
+      tags:
+      - Manual Track
+swagger: "2.0"
